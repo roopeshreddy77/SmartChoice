@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_seller_sign_in"
+            android:title="Seller Sign-In" />
+        <item
+            android:id="@+id/nav_help"
+            android:title="Help" />
+        <item
+            android:id="@+id/nav_about"
+            android:title="About" />
+        <item
+            android:id="@+id/nav_contact_us"
+            android:title="Contact us" />
+    </group>
+
+</menu>

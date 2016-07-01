@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "760160986825",
+    "firebase_url": "https://smart-choice-81134.firebaseio.com",
+    "project_id": "smart-choice-81134",
+    "storage_bucket": "smart-choice-81134.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760160986825:android:4091ca5748085929",
+        "android_client_info": {
+          "package_name": "team08.smartchoice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760160986825-qdqchi9nrvb64mhnmr4eg1cgok4n92i5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoiBslI6OysLqf7ZulIHfkGbPx5xgIXeM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
