@@ -55,21 +55,31 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:paddingTop="125dp"
-        android:layout_below="@+id/loginLayout">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Users"
-            android:textSize="25dp"
-            android:layout_gravity="center"
-            android:id="@+id/textView" />
-
-        <Button
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sign Up"
-            android:id="@+id/button2" />
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sign Up"
+                android:id="@+id/button2"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Users"
+                android:textSize="25dp"
+                android:layout_gravity="center"
+                android:id="@+id/textView"
+                android:layout_above="@+id/button2"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
     </LinearLayout>
 
 

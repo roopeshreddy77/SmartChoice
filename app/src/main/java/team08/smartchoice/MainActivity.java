@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+
     }
 
     @Override
@@ -73,19 +75,42 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_seller_sign_in) {
-            // Handle the camera action
+            // Handle the sign in page action
             LoginFragment loginFragment = new LoginFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(
                     R.id.relativelayout_for_fragment,
                     loginFragment,
-                    loginFragment.getTag()).commit();
+                    loginFragment.getTag()).addToBackStack( "login" ).commit();
 
         } else if (id == R.id.nav_help) {
+            HelpFragment helpFragment = new HelpFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    helpFragment,
+                    helpFragment.getTag()).addToBackStack( "help" ).commit();
+
+
+
+
+
 
         } else if (id == R.id.nav_about) {
+            AboutFragment aboutFragment = new AboutFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    aboutFragment,
+                    aboutFragment.getTag()).addToBackStack( "about" ).commit();
 
         } else if (id == R.id.nav_contact_us) {
+            ContactFragment contactFragment = new ContactFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.relativelayout_for_fragment,
+                    contactFragment,
+                    contactFragment.getTag()).addToBackStack( "contact" ).commit();
 
         }
 
@@ -93,4 +118,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }
