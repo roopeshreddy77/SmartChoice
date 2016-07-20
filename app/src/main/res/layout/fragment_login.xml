@@ -29,13 +29,14 @@
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/login_email"
                 android:hint="Email-ID" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:ems="10"
-                android:id="@+id/editText"
+                android:id="@+id/login_password"
                 android:hint="Password"
                 android:layout_gravity="center_horizontal" />
 
@@ -43,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Login"
-                android:id="@+id/button"
+                android:id="@+id/login_button"
                 android:layout_gravity="right" />
 
         </LinearLayout>

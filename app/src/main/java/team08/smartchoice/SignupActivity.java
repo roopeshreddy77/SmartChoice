@@ -24,6 +24,7 @@ public class SignupActivity extends AppCompatActivity implements OnCompleteListe
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    FirebaseUser user;
     private EditText emailid;
     private EditText password;
 
@@ -43,7 +44,7 @@ public class SignupActivity extends AppCompatActivity implements OnCompleteListe
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
                     Log.d("xyx", "onAuthStateChanged:signed_in:" + user.getUid());
@@ -88,6 +89,7 @@ public class SignupActivity extends AppCompatActivity implements OnCompleteListe
                     Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(this, SellerDetails.class);
+            intent.putExtra("userID",user.getUid().toString());
             startActivity(intent);
         }
 
