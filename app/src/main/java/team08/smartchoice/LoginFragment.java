@@ -32,6 +32,7 @@ public class LoginFragment extends Fragment{
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseUser user;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -100,7 +101,9 @@ public class LoginFragment extends Fragment{
                         if (!task.isSuccessful()){
                             Toast.makeText(getActivity(),"Authentication Failed",Toast.LENGTH_SHORT).show();
                         } else {
+                            Log.d("User ID is ", mAuth.getCurrentUser().getUid().toString());
                             Intent intent = new Intent(getActivity(), SellerDashboard.class);
+                            intent.putExtra("userID",mAuth.getCurrentUser().getUid().toString());
                             startActivity(intent);
                         }
                     }
