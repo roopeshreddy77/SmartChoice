@@ -8,23 +8,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="team08.smartchoice.MainActivity"
     tools:showIn="@layout/app_bar_main"
     android:id="@+id/relativelayout_for_fragment">
 
+
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/seller_listView"
-        >
-    </ListView>
+        android:id="@+id/sellers_list_view"></ListView>
 
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-        <!--android:text="Large Text"-->
-        <!--android:id="@+id/textView7" />-->
+
 </LinearLayout>

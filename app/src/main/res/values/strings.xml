@@ -11,5 +11,5 @@
     <string name="title_activity_signup">SignupActivity</string>
     <string name="title_activity_seller_details">SellerDetails</string>
     <string name="title_activity_seller_dashboard">SellerDashboard</string>
-    <string name="title_activity_seller_items_list">seller_items_list</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>

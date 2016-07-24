@@ -1,18 +1,9 @@
 package team08.smartchoice;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -21,17 +12,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.InputStream;
-
 public class SellerItemsListActivity extends AppCompatActivity {
 
     private String sellerID;
     private DatabaseReference mDatabase;
-    private String[] itemName = new String[2];
-    private String[] originalPrice = new String[2];
-    private String[] discountPrice = new String[2];
-    private String[] expiryDate = new String[2];
-    private String[] imageURL = new String[2];
+    private String[] itemName = new String[3];
+    private String[] originalPrice = new String[3];
+    private String[] discountPrice = new String[3];
+    private String[] expiryDate = new String[3];
+    private String[] imageURL = new String[3];
 
     private int count = 0;
     ListView list;
@@ -41,7 +30,7 @@ public class SellerItemsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_items_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         //Get Firebase Database Reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -53,7 +42,7 @@ public class SellerItemsListActivity extends AppCompatActivity {
 
     //Set List View Properties
     private void customSellerItemsListLoadAdapter(){
-        CustomListAdapter adapter = new CustomListAdapter(this, itemName, imageURL);
+        CustomItemsListViewAdapter adapter = new CustomItemsListViewAdapter(this, itemName, imageURL);
         list = (ListView) findViewById(R.id.seller_items_listview);
         list.setAdapter(adapter);
     }
@@ -81,5 +70,4 @@ public class SellerItemsListActivity extends AppCompatActivity {
             }
         });
     }
-
 }
