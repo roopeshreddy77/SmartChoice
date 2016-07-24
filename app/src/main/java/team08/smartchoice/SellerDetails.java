@@ -37,35 +37,26 @@ public class SellerDetails extends AppCompatActivity {
         state = (TextView) findViewById(R.id.store_state);
         zip = (TextView) findViewById(R.id.store_zip);
         submit = (Button) findViewById(R.id.store_submit);
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                writeNewSeller();
+                addNewSeller();
             }
         });
-
     }
 
-
-    private void writeNewSeller(){
-        Seller seller = new Seller(userID, storeName.getText().toString(), new Address(addressLine1.getText().toString(),
+    private void addNewSeller(){
+        Seller seller = new Seller(userID, storeName.getText().toString(),
+                new Address(addressLine1.getText().toString(),
                 addressLine2.getText().toString(),
                 city.getText().toString(), state.getText().toString(),
                 Integer.parseInt(zip.getText().toString())));
 
-
         mDatabase.child("sellers").child(userID).setValue(seller);
         Intent intent = new Intent(this, SellerDashboard.class);
+        intent.putExtra("userID", userID.toString());
         startActivity(intent);
-
-
     }
-
-
-
-
-
 }

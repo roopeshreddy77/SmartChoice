@@ -55,7 +55,9 @@ public class LoginFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d("Yikes", "ascasd");
         View view =  inflater.inflate(R.layout.fragment_login, container, false);
+        Log.d("Yikes", "ascasasasasasasadafdcasd");
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener(){
             @Override

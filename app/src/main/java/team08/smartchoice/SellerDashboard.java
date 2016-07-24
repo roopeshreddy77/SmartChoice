@@ -31,6 +31,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class SellerDashboard extends AppCompatActivity {
     DatePickerFragment datePickerFragment;
@@ -97,13 +100,13 @@ public class SellerDashboard extends AppCompatActivity {
     }
 
     private void writeNewItem1(){
-        Item item = new Item(userID, new ItemDetails(itemName.getText().toString(),
-                Integer.parseInt(originalPrice.getText().toString()),
-                Integer.parseInt(discountPrice.getText().toString()),
-                datePickerFragment.getSelectedDate(),
-                imageDownloadURL));
-
-        mDatabase.child("Items").child(userID).setValue(item);
+//        Item item = new Item(userID, itemName.getText().toString(),
+//                Integer.parseInt(originalPrice.getText().toString()),
+//                Integer.parseInt(discountPrice.getText().toString()),
+//                datePickerFragment.getSelectedDate(),
+//                imageDownloadURL);
+//
+//        mDatabase.child("Items").child(userID).setValue(item);
         Intent intent = new Intent(this, SellerDashboard.class);
         startActivity(intent);
     }
@@ -115,8 +118,22 @@ public class SellerDashboard extends AppCompatActivity {
                 datePickerFragment.getSelectedDate(),
                 imageDownloadURL));
 
+        ItemDetails itemDetails = new ItemDetails(itemName.getText().toString(),
+                Integer.parseInt(originalPrice.getText().toString()),
+                Integer.parseInt(discountPrice.getText().toString()),
+                datePickerFragment.getSelectedDate(),
+                imageDownloadURL);
+
+        String key = mDatabase.child("Items").child(userID).push().getKey();
+        Map<String, Object> postData = itemDetails.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/Items/" + userID + "/" + key, postData);
+
         Log.d("Path String",userID.toString());
-        mDatabase.child("Items").child(userID).setValue(item);
+
+        mDatabase.updateChildren(childUpdates);
+
+        //mDatabase.child("Items").child(userID).setValue(item);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
