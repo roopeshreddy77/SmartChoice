@@ -31,6 +31,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SellerDashboard extends AppCompatActivity {
     DatePickerFragment datePickerFragment;
@@ -56,13 +58,14 @@ public class SellerDashboard extends AppCompatActivity {
         setContentView(R.layout.activity_seller_dashboard);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Seller Dashboard");
         userID = getIntent().getExtras().getString("userID");
 
         itemName = (TextView) findViewById(R.id.item_name);
         originalPrice = (TextView) findViewById(R.id.original_cost);
         discountPrice = (TextView) findViewById(R.id.discount_cost);
         viewPrevious = (Button) findViewById(R.id.view_previousitems);
-        addAnother = (Button) findViewById(R.id.view_previousitems);
+        addAnother = (Button) findViewById(R.id.item_add_another);
         addGohome = (Button) findViewById(R.id.submit_gotohome);
         expiryDate = (Button) findViewById(R.id.dealExpiry_button);
         imageUrl = (Button) findViewById(R.id.item_image);
@@ -73,15 +76,14 @@ public class SellerDashboard extends AppCompatActivity {
         addAnother.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                writeNewItem1();
+                addNewItem(true);
             }
         });
 
         addGohome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                writeNewItem2();
-                //uploadImagae();
+                addNewItem(false);
             }
         });
 
@@ -96,29 +98,32 @@ public class SellerDashboard extends AppCompatActivity {
         });
     }
 
-    private void writeNewItem1(){
-        Item item = new Item(userID, new ItemDetails(itemName.getText().toString(),
+    private void addNewItem(Boolean flag) {
+        ItemDetails itemDetails = new ItemDetails(itemName.getText().toString(),
                 Integer.parseInt(originalPrice.getText().toString()),
                 Integer.parseInt(discountPrice.getText().toString()),
                 datePickerFragment.getSelectedDate(),
-                imageDownloadURL));
+                imageDownloadURL);
 
-        mDatabase.child("Items").child(userID).setValue(item);
-        Intent intent = new Intent(this, SellerDashboard.class);
-        startActivity(intent);
-    }
-
-    private void writeNewItem2() {
-        Item item = new Item(userID, new ItemDetails(itemName.getText().toString(),
-                Integer.parseInt(originalPrice.getText().toString()),
-                Integer.parseInt(discountPrice.getText().toString()),
-                datePickerFragment.getSelectedDate(),
-                imageDownloadURL));
+        String key = mDatabase.child("Items").child(userID).push().getKey();
+        Map<String, Object> postData = itemDetails.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/Items/" + userID + "/" + key, postData);
 
         Log.d("Path String",userID.toString());
-        mDatabase.child("Items").child(userID).setValue(item);
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+
+        mDatabase.updateChildren(childUpdates);
+
+        Log.d("Path String",userID.toString());
+
+        if (flag){
+            Intent intent = new Intent(getApplicationContext(), SellerDashboard.class);
+            intent.putExtra("userID", userID);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void uploadImage(){

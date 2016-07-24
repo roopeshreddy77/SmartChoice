@@ -59,6 +59,7 @@ public class SellerDetails extends AppCompatActivity {
 
         mDatabase.child("sellers").child(userID).setValue(seller);
         Intent intent = new Intent(this, SellerDashboard.class);
+        intent.putExtra("userID", userID.toString());
         startActivity(intent);
 
 
