@@ -22,13 +22,20 @@ public class CustomItemsListViewAdapter extends ArrayAdapter<String> {
     private final Activity context;
     private final String[] itemName;
     private final String[] imgid;
+    private String[] originalPrice;
+    private String[] discountPrice;
+    private String[] expiryDate;
     private ImageView imageView;
 
-    public CustomItemsListViewAdapter(Activity context, String[] itemName, String[] imageUrl) {
+    public CustomItemsListViewAdapter(Activity context, String[] itemName, String[] imageUrl,
+                                      String[] originalPrice, String[] discountPrice, String[] expiryDate) {
         super(context, R.layout.seller_items_list, itemName);
         this.context = context;
         this.itemName = itemName;
         this.imgid = imageUrl;
+        this.originalPrice = originalPrice;
+        this.discountPrice = discountPrice;
+        this.expiryDate = expiryDate;
     }
 
     public View getView(int position, View view, ViewGroup parent){
@@ -37,7 +44,13 @@ public class CustomItemsListViewAdapter extends ArrayAdapter<String> {
 
         TextView textTitle = (TextView) rowView.findViewById(R.id.imageTitle);
         imageView = (ImageView) rowView.findViewById(R.id.imageView);
+        TextView textOriginalPrice = (TextView) rowView.findViewById(R.id.list_item_original_price);
+        TextView textDiscountPrice = (TextView) rowView.findViewById(R.id.list_item_discount_price);
+        TextView textExpiryDate = (TextView) rowView.findViewById(R.id.list_item_expiry_date);
 
+        textOriginalPrice.setText("Original Price : $"+ originalPrice[position]);
+        textDiscountPrice.setText("Discount Price : $" + discountPrice[position]);
+        textExpiryDate.setText("Deal Expiry Date : " + expiryDate[position]);
         textTitle.setText(itemName[position]);
         new DownloadImageTask((ImageView) rowView.findViewById(R.id.imageView)).execute(imgid[position]);
         return rowView;

@@ -100,8 +100,8 @@ public class SellerDashboard extends AppCompatActivity {
 
     private void addNewItem(Boolean flag) {
         ItemDetails itemDetails = new ItemDetails(itemName.getText().toString(),
-                Integer.parseInt(originalPrice.getText().toString()),
-                Integer.parseInt(discountPrice.getText().toString()),
+                Double.parseDouble(originalPrice.getText().toString()),
+                Double.parseDouble(discountPrice.getText().toString()),
                 datePickerFragment.getSelectedDate(),
                 imageDownloadURL);
 

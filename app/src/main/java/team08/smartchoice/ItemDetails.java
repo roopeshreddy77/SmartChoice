@@ -8,8 +8,8 @@ import java.util.Map;
  */
 public class ItemDetails {
     public String itemName;
-    public int originalPrice;
-    public int discountPrice;
+    public Double originalPrice;
+    public Double discountPrice;
     public String expiryDate;
     public String imageUrl;
 
@@ -17,7 +17,7 @@ public class ItemDetails {
 
     }
 
-    public ItemDetails(String itemName, int originalPrice, int discountPrice, String expiryDate, String imageUrl){
+    public ItemDetails(String itemName, Double originalPrice, Double discountPrice, String expiryDate, String imageUrl){
         this.itemName = itemName;
         this.originalPrice = originalPrice;
         this.discountPrice = discountPrice;
