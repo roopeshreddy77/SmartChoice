@@ -2,15 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
+    android:paddingBottom="10dp"
     android:layout_height="fill_parent" >
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
+        android:layout_height="175dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:scaleType="fitXY"
+        android:alpha="0.5"
         android:src="#ccc8c8" />
 
     <TextView
@@ -19,8 +21,45 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
-        android:text="Dummy"
+        android:text="Item Name"
+        android:textSize="25dp"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp" />
+        android:layout_marginLeft="20dp"
+        android:textColor="#040000" />
 
+    <TextView
+        android:id="@+id/list_item_original_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:text="Original Price"
+        android:textSize="20dp"
+        android:layout_alignParentRight="true"
+        android:textColor="#070000" />
+
+    <TextView
+        android:id="@+id/list_item_discount_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="10dp"
+        android:text="Discount Price"
+        android:textSize="20dp"
+        android:layout_alignParentRight="true"
+        android:textColor="#070000" />
+
+    <TextView
+        android:id="@+id/list_item_expiry_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="150dp"
+        android:layout_marginRight="10dp"
+        android:text="ExpityDate"
+        android:textSize="20dp"
+        android:layout_alignParentRight="true"
+        android:textColor="#070000" />
 </RelativeLayout>

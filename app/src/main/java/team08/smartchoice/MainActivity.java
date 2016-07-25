@@ -30,11 +30,11 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference mDatabase;
     private Integer count = 0;
 
-    private String[] storeName = new String[10];
+    private String[] storeName;
 
-    private String[] storeAddress = new String[10];
+    private String[] storeAddress;
 
-    private String[] sellerID = new String[10] ;
+    private String[] sellerID;
 
     private ListView list;
 
@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity
                         Log.d("HYeyyyyy", "Database");
                         Long childCount = dataSnapshot.getChildrenCount();
                         Log.d("Child COunt", String.valueOf(dataSnapshot.getChildrenCount()));
+                        storeName = new String[childCount.intValue()];
+                        storeAddress = new String[childCount.intValue()];
+                        sellerID = new String[childCount.intValue()];
                         for (DataSnapshot child : dataSnapshot.getChildren()){
                             Log.d("Store Name::",child.child("storeName").getValue().toString());
                             storeName[count] = child.child("storeName").getValue().toString();

@@ -16,11 +16,11 @@ public class SellerItemsListActivity extends AppCompatActivity {
 
     private String sellerID;
     private DatabaseReference mDatabase;
-    private String[] itemName = new String[3];
-    private String[] originalPrice = new String[3];
-    private String[] discountPrice = new String[3];
-    private String[] expiryDate = new String[3];
-    private String[] imageURL = new String[3];
+    private String[] itemName;
+    private String[] originalPrice;
+    private String[] discountPrice;
+    private String[] expiryDate;
+    private String[] imageURL;
 
     private int count = 0;
     ListView list;
@@ -31,7 +31,7 @@ public class SellerItemsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_seller_items_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
-
+        setTitle("Items");
         //Get Firebase Database Reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -42,7 +42,8 @@ public class SellerItemsListActivity extends AppCompatActivity {
 
     //Set List View Properties
     private void customSellerItemsListLoadAdapter(){
-        CustomItemsListViewAdapter adapter = new CustomItemsListViewAdapter(this, itemName, imageURL);
+        CustomItemsListViewAdapter adapter = new CustomItemsListViewAdapter(this, itemName,
+                imageURL, originalPrice, discountPrice, expiryDate);
         list = (ListView) findViewById(R.id.seller_items_listview);
         list.setAdapter(adapter);
     }
@@ -52,6 +53,12 @@ public class SellerItemsListActivity extends AppCompatActivity {
         mDatabase.child("Items").child(sellerID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Long childCount = dataSnapshot.getChildrenCount();
+                itemName = new String[childCount.intValue()];
+                originalPrice = new String[childCount.intValue()];
+                discountPrice = new String[childCount.intValue()];
+                expiryDate = new String[childCount.intValue()];
+                imageURL = new String[childCount.intValue()];
                 for (DataSnapshot child: dataSnapshot.getChildren()){
                     itemName[count] = child.child("itemName").getValue().toString();
                     originalPrice[count] = child.child("originalPrice").getValue().toString();
