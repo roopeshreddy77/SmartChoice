@@ -1,6 +1,10 @@
 package team08.smartchoice;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -25,7 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
 
     private DatabaseReference mDatabase;
     private Integer count = 0;
@@ -37,6 +41,9 @@ public class MainActivity extends AppCompatActivity
     private String[] sellerID;
 
     private ListView list;
+
+    private LocationListener locationListener;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         //sellersListAdapter();
         loadSellerList();
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0 ,0 , this);
     }
 
     private void sellersListAdapter(){
@@ -187,5 +197,23 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.d("Location Service", "Log" + location.getLongitude() + "Lat" + location.getLatitude());
+    }
 
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.d("Latitude",provider);
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Log.d("Latitude",provider);
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Log.d("Latitude",provider);
+    }
 }
