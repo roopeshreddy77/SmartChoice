@@ -2,9 +2,8 @@ package team08.smartchoice;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.location.*;
+import android.location.Address;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -28,6 +27,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
 
@@ -42,8 +44,8 @@ public class MainActivity extends AppCompatActivity
 
     private ListView list;
 
-    private LocationListener locationListener;
     private LocationManager locationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +64,23 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //sellersListAdapter();
         loadSellerList();
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0 ,0 , this);
+//        geocoder = new Geocoder(this);
+//
+//        try {
+//            List<android.location.Address> addresses =
+//                    geocoder.getFromLocationName("1334 The Alameda, San Jose, CA, 95126",5);
+//            if (addresses != null){
+//                Address location = addresses.get(0);
+//                Log.d("Geo Coder", "Lat " + location.getLatitude());
+//                Log.d("Geo Coder", "Log " + location.getLongitude());
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void sellersListAdapter(){
@@ -199,7 +213,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("Location Service", "Log" + location.getLongitude() + "Lat" + location.getLatitude());
+        //Log.d("Location Service", "Log" + location.getLongitude() + "Lat" + location.getLatitude());
     }
 
     @Override
