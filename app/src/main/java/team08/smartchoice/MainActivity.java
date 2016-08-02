@@ -20,6 +20,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +41,10 @@ import java.io.IOException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LocationListener, OnMapReadyCallback {
+
+    private MapView mapView;
+    private GoogleMap googleMap;
 
     private DatabaseReference mDatabase;
     private Integer count = 0;
@@ -81,6 +94,29 @@ public class MainActivity extends AppCompatActivity
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+
+        mapView = (MapView) findViewById(R.id.map_view);
+        mapView.onCreate(savedInstanceState);
+
+        mapView.getMapAsync(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 
     private void sellersListAdapter(){
@@ -229,5 +265,22 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onProviderDisabled(String provider) {
         Log.d("Latitude",provider);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        this.googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.3316778, -122.0323991))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        Log.d("onMap","Hey");
+        this.googleMap.setMyLocationEnabled(true);
+        this.googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        MapsInitializer.initialize(getApplicationContext());
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(37.3316778, -122.0323991)).zoom(15).bearing(90).tilt(40).build();
+        CameraUpdate cameraUpdate =
+                CameraUpdateFactory.newLatLng(new LatLng(37.3316778, -122.0323991));
+        this.googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 }
