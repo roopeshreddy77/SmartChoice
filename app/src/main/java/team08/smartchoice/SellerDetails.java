@@ -39,11 +39,11 @@ public class SellerDetails extends AppCompatActivity {
     String userID;
     private Double latitude;
     private Double logitude;
-    private String geoFireKey;
 
     private DatabaseReference mDatabase;
     private GetLocationCoordinates getLocationCoordinates;
     private GeoFire geoFire;
+    private GeoQuery geoQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,18 +111,16 @@ public class SellerDetails extends AppCompatActivity {
             public void onComplete(String key, DatabaseError error) {
                 if (error != null){
                     Log.d("Geo Fire", "error");
-                    geoFireKey = "NA";
                 } else {
                     Log.d("Geo Fire", "Update SuccessFull");
                     Log.d("Geo Fire KEY", key);
-                    geoFireKey = key;
                 }
             }
         });
         Seller seller = new Seller(userID, storeName.getText().toString(), new Address(addressLine1.getText().toString(),
                 addressLine2.getText().toString(),
                 city.getText().toString(), state.getText().toString(),
-                Integer.parseInt(zip.getText().toString())));
+                Integer.parseInt(zip.getText().toString())),"9iu98sn");
         mDatabase.child("sellers").child(userID).setValue(seller);
         Log.d("addNewSeller", "End");
     }
