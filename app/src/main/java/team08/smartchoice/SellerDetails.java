@@ -39,11 +39,11 @@ public class SellerDetails extends AppCompatActivity {
     String userID;
     private Double latitude;
     private Double logitude;
-    private String geoFireKey;
 
     private DatabaseReference mDatabase;
     private GetLocationCoordinates getLocationCoordinates;
     private GeoFire geoFire;
+    private GeoQuery geoQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,53 +111,17 @@ public class SellerDetails extends AppCompatActivity {
             public void onComplete(String key, DatabaseError error) {
                 if (error != null){
                     Log.d("Geo Fire", "error");
-                    geoFireKey = "NA";
                 } else {
                     Log.d("Geo Fire", "Update SuccessFull");
                     Log.d("Geo Fire KEY", key);
-                    geoFireKey = key;
                 }
             }
         });
         Seller seller = new Seller(userID, storeName.getText().toString(), new Address(addressLine1.getText().toString(),
                 addressLine2.getText().toString(),
                 city.getText().toString(), state.getText().toString(),
-                Integer.parseInt(zip.getText().toString())));
+                Integer.parseInt(zip.getText().toString())),"9iu98sn");
         mDatabase.child("sellers").child(userID).setValue(seller);
         Log.d("addNewSeller", "End");
-        getLocations();
-    }
-
-    private void getLocations(){
-
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(37.7832, -122.4056), 0.9);
-        Log.d("Geo Query", "Hey");
-        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-            @Override
-            public void onKeyEntered(String key, GeoLocation location) {
-                Log.d("Geo Query", "KeyEnt");
-                System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
-            }
-
-            @Override
-            public void onKeyExited(String key) {
-                System.out.println(String.format("Key %s is no longer in the search area", key));
-            }
-
-            @Override
-            public void onKeyMoved(String key, GeoLocation location) {
-                System.out.println(String.format("Key %s moved within the search area to [%f,%f]", key, location.latitude, location.longitude));
-            }
-
-            @Override
-            public void onGeoQueryReady() {
-                System.out.println("All initial data has been loaded and events have been fired!");
-            }
-
-            @Override
-            public void onGeoQueryError(DatabaseError error) {
-                System.err.println("There was an error with this query: " + error);
-            }
-        });
     }
 }

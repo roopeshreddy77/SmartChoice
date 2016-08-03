@@ -20,6 +20,21 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,10 +43,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LocationListener,
+        OnMapReadyCallback, GeoQueryEventListener {
+
+    private MapView mapView;
+    private GoogleMap googleMap;
+    private GeoQuery geoQuery;
+    private GeoFire geoFire;
+    private Map<String,Marker> markers;
 
     private DatabaseReference mDatabase;
     private Integer count = 0;
@@ -81,6 +105,34 @@ public class MainActivity extends AppCompatActivity
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+
+        geoFire = new GeoFire(mDatabase.child("locations"));
+        this.geoQuery = this.geoFire.queryAtLocation(new GeoLocation(37.3335423, -121.9132912), 3);
+        this.markers = new HashMap<>();
+
+
+        mapView = (MapView) findViewById(R.id.map_view);
+        mapView.onCreate(savedInstanceState);
+
+        mapView.getMapAsync(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 
     private void sellersListAdapter(){
@@ -229,5 +281,72 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onProviderDisabled(String provider) {
         Log.d("Latitude",provider);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        this.googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.3335423, -121.9132912))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        Log.d("onMap","Hey");
+        this.googleMap.setMyLocationEnabled(true);
+        this.googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        MapsInitializer.initialize(getApplicationContext());
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(37.3335423, -121.9132912)).zoom(15).bearing(90).tilt(40).build();
+        this.googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("onStart", "Start");
+        this.geoQuery.addGeoQueryEventListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.geoQuery.removeAllListeners();
+        for (Marker marker: this.markers.values()) {
+            marker.remove();
+        }
+        this.markers.clear();
+    }
+
+    @Override
+    public void onKeyEntered(String key, GeoLocation location) {
+        Log.d("onKeyEntered", "Start");
+        Log.d("onKeyEntered", key);
+        Marker marker = this.googleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)));
+        this.markers.put(key, marker);
+    }
+
+    @Override
+    public void onKeyExited(String key) {
+        Marker marker = this.markers.get(key);
+        if (marker != null) {
+            marker.remove();
+            this.markers.remove(key);
+        }
+    }
+
+    @Override
+    public void onKeyMoved(String key, GeoLocation location) {
+        Marker marker = this.markers.get(key);
+//        if (marker != null) {
+//            this.animateMarkerTo(marker, location.latitude, location.longitude);
+//        }
+    }
+
+    @Override
+    public void onGeoQueryReady() {
+        Log.d("onGeoQueryReady", "Start");
+    }
+
+    @Override
+    public void onGeoQueryError(DatabaseError error) {
+
     }
 }
