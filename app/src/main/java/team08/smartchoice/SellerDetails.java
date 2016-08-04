@@ -120,7 +120,7 @@ public class SellerDetails extends AppCompatActivity {
         Seller seller = new Seller(userID, storeName.getText().toString(), new Address(addressLine1.getText().toString(),
                 addressLine2.getText().toString(),
                 city.getText().toString(), state.getText().toString(),
-                Integer.parseInt(zip.getText().toString())),"9iu98sn");
+                Integer.parseInt(zip.getText().toString())));
         mDatabase.child("sellers").child(userID).setValue(seller);
         Log.d("addNewSeller", "End");
     }

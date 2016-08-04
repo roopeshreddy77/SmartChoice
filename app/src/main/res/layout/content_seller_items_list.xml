@@ -12,10 +12,36 @@
     tools:context=".SellerItemsListActivity"
     tools:showIn="@layout/activity_seller_items_list">
 
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/seller_items_listview">
-    </ListView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_weight="1">
+
+            <com.google.android.gms.maps.MapView android:id="@+id/store_map_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="0dp"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/seller_items_listview"
+                android:layout_marginTop="5dp">
+            </ListView>
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>
