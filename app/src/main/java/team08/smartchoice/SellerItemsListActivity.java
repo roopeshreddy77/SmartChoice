@@ -1,13 +1,25 @@
 package team08.smartchoice;
 
-import android.location.Location;
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
-import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -40,6 +52,8 @@ public class SellerItemsListActivity extends AppCompatActivity {
     private Double latitude;
     private Double longitude;
 
+    private Point p;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +69,7 @@ public class SellerItemsListActivity extends AppCompatActivity {
         mapView = (MapView) findViewById(R.id.store_map_view);
         mapView.onCreate(savedInstanceState);
 
+
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -63,8 +78,6 @@ public class SellerItemsListActivity extends AppCompatActivity {
                 googleMaps.getUiSettings().setMyLocationButtonEnabled(true);
             }
         });
-
-
 
         Log.d("Seller ID", sellerID.toString());
         connectToFirebase();
@@ -98,14 +111,33 @@ public class SellerItemsListActivity extends AppCompatActivity {
         this.googleMaps.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
-
-
     //Set List View Properties
     private void customSellerItemsListLoadAdapter(){
         CustomItemsListViewAdapter adapter = new CustomItemsListViewAdapter(this, itemName,
                 imageURL, originalPrice, discountPrice, expiryDate);
         list = (ListView) findViewById(R.id.seller_items_listview);
         list.setAdapter(adapter);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("On Item Click", "sdcscs");
+                if ( p!= null ){
+                    showPopup(SellerItemsListActivity.this, p);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+
+        //Initialize the Point with x, and y positions
+        p = new Point();
+        p.x = 200;
+        p.y = 500;
+        Log.d("Location ag",String.valueOf(p.x));
+        Log.d("Location ag",String.valueOf(p.y));
     }
 
     //Load Items
@@ -152,4 +184,45 @@ public class SellerItemsListActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    // The method that displays the popup.
+    private void showPopup(final Activity context, Point p) {
+        int popupWidth = 700;
+        int popupHeight = 400;
+
+        // Inflate the popup_layout.xml
+        LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.popup);
+        LayoutInflater layoutInflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.popup_layout, viewGroup);
+
+        // Creating the PopupWindow
+        final PopupWindow popup = new PopupWindow(context);
+        popup.setContentView(layout);
+        popup.setWidth(popupWidth);
+        popup.setHeight(popupHeight);
+        popup.setFocusable(true);
+
+        // Some offset to align the popup a bit to the right, and a bit down, relative to button's position.
+        int OFFSET_X = 30;
+        int OFFSET_Y = 30;
+
+        // Clear the default translucent background
+        popup.setBackgroundDrawable(new BitmapDrawable());
+
+        // Displaying the popup at the specified location, + offsets.
+        popup.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
+
+        // Getting a reference to Close button, and close the popup when clicked.
+        Button close = (Button) layout.findViewById(R.id.close);
+        close.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                popup.dismiss();
+            }
+        });
+    }
+
 }
